@@ -49,7 +49,9 @@ export default function ProductCard({ product }: { product: Product }) {
           <span className="text-lg font-display font-bold text-gray-900">
             ${product.price.toFixed(2)}
           </span>
-          <AddToCartButton product={product} />
+          <AddToCartButton product={product} 
+           isOnCard={true}
+          />
         </div>
       </div>
     </Link>

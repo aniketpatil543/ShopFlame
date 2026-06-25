@@ -4,7 +4,7 @@ import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
 
-export default function AddToCartButton({ product }: { product: Product }) {
+export default function AddToCartButton({ product, isOnCard }: { product: Product; isOnCard?: boolean }) {
   const { addToCart, cartItems } = useCart();
   const [flash, setFlash] = useState(false);
 
@@ -29,11 +29,16 @@ function handleAdd(
     <div className="flex flex-col gap-3">
       <button
         onClick={handleAdd}
-        className={`w-full py-4 rounded-2xl text-base font-bold transition-all duration-150 ${
+        className={`w-full rounded-2xl text-base font-bold transition-all duration-150
+          ${
           flash
             ? "bg-green-500 text-white scale-[0.98]"
             : "bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl"
-        }`}
+        }
+        ${
+          isOnCard ? "py-1 px-2" : "py-4"
+        }`
+      }
       >
         {flash
           ? "✓ Added to cart!"

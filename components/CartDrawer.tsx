@@ -94,13 +94,18 @@ export default function CartDrawer({
                   className="flex gap-4 p-3 rounded-xl bg-orange-50/50 border border-orange-100"
                 >
                   <div className="relative w-16 h-16 shrink-0 bg-white rounded-lg overflow-hidden border border-gray-100">
-                    <Image
+                    {/* <Image
                       src={item.image}
                       alt={item.title}
                       fill
                       className="object-contain p-1"
                       sizes="64px"
-                    />
+                    /> */}
+                           <img
+  src={item.image}
+  alt={item.title}
+  className="object-contain p-1"
+/>
                   </div>
 
                   <div className="flex-1 min-w-0">
