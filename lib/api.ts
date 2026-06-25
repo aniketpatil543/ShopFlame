@@ -1,6 +1,6 @@
 import { Product } from "@/types";
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const BASE_URL = "https://fakestoreapi.com";
 
