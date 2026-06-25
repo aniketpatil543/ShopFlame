@@ -20,14 +20,18 @@ export default function ProductCard({ product }: { product: Product }) {
     <Link href={`/products/${product.id}`} className="card group block overflow-hidden">
 
       <div className="relative h-52 bg-gray-50 overflow-hidden">
-        <Image
+        {/* <Image
           src={product.image}
           alt={product.title}
           fill
           className="object-contain p-6 group-hover:scale-105 transition-transform duration-300"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-        />
-       
+        /> */}
+       <img
+  src={product.image}
+  alt={product.title}
+  className="object-contain w-full h-full p-6"
+/>
       </div>
 
       <div className="p-4 flex flex-col gap-2">

@@ -100,13 +100,15 @@ interface DummyProductsResponse {
 }
 
 function mapProduct(product: DummyProduct): Product {
+  console.log(product.images[0]);
+  console.log(product.thumbnail);
   return {
     id: product.id,
     title: product.title,
     price: product.price,
     description: product.description,
     category: product.category,
-    image: product.thumbnail,
+    image: product.images[0] ?? product.thumbnail,
     rating: {
       rate: product.rating,
       count: product.stock,
