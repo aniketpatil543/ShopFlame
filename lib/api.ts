@@ -7,9 +7,15 @@ const BASE_URL = "https://fakestoreapi.com";
 export async function getProducts(): Promise<Product[]> {
   try {
     const url = `${BASE_URL}/products`;
+
     console.log("Fetching:", url);
 
     const res = await fetch(url, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+        Accept: "application/json",
+      },
       next: { revalidate: 60 },
     });
 
@@ -21,11 +27,7 @@ export async function getProducts(): Promise<Product[]> {
       throw new Error(`Failed to fetch products: ${res.status}`);
     }
 
-    const products: Product[] = await res.json();
-
-    console.log(`Fetched ${products.length} products`);
-
-    return products;
+    return res.json();
   } catch (err) {
     console.error("Fetch Error (getProducts):", err);
     throw err;
