@@ -15,11 +15,11 @@ export default function ProductError({ error, reset }: { error: Error; reset: ()
         </h2>
         <p className="text-gray-500 mb-8 text-sm">{error.message}</p>
         <div className="flex items-center justify-center gap-3">
-          <button onClick={reset} className="btn-primary px-6 py-2.5 rounded-xl">
+          <button onClick={reset} className="btn-primary px-6 py-2.5 rounded-xl text-black">
             <RefreshCwIcon className="w-5 h-5" />
             <span>Retry</span>
           </button>
-          <Link href="/products" className="btn-outline px-6 py-2.5">
+          <Link href="/products" className="btn-outline px-6 py-2.5 text-black">
             <ArrowLeft className="w-5 h-5" />
             <span>All products</span>
           </Link>

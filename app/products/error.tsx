@@ -28,13 +28,13 @@ export default function ProductsError({ error, reset }: Props) {
             Error ID: {error.digest}
           </p>
         )}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-black">
             <span>
                 <RefreshCwIcon></RefreshCwIcon>
             </span>
           <button
             onClick={reset}
-            className="btn-primary px-8 py-3 rounded-xl"
+            className="btn-primary px-8 py-3 rounded-xl text-black"
           >
             Retry
           </button>
