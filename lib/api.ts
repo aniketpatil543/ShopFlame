@@ -14,11 +14,29 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getCategories(): Promise<string[]> {
-  const res = await fetch(`${BASE_URL}/products/categories`, {
-    next: { revalidate: 3600 },
-  });
-  if (!res.ok) throw new Error("Failed to fetch categories");
-  return res.json();
+  const url = `${BASE_URL}/products/categories`;
+
+  console.log("Fetching:", url);
+
+  try {
+    const res = await fetch(url, {
+      next: { revalidate: 3600 },
+    });
+
+    console.log("Status:", res.status);
+    console.log("Status Text:", res.statusText);
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Response:", text);
+      throw new Error(`Failed to fetch categories: ${res.status}`);
+    }
+
+    return res.json();
+  } catch (err) {
+    console.error("Fetch Error:", err);
+    throw err;
+  }
 }
 
 export async function getProductsByCategory(category: string): Promise<Product[]> {
