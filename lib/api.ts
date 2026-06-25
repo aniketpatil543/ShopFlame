@@ -4,36 +4,54 @@ import { Product } from "@/types";
 
 const BASE_URL = "https://fakestoreapi.com";
 
-
 export async function getProducts(): Promise<Product[]> {
-  const res = await fetch(`${BASE_URL}/products`, {
-    next: { revalidate: 60 },
-  });
-  if (!res.ok) throw new Error("Failed to fetch products");
-  return res.json();
+  try {
+    const url = `${BASE_URL}/products`;
+    console.log("Fetching:", url);
+
+    const res = await fetch(url, {
+      next: { revalidate: 60 },
+    });
+
+    console.log("Status:", res.status);
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Response:", text);
+      throw new Error(`Failed to fetch products: ${res.status}`);
+    }
+
+    const products: Product[] = await res.json();
+
+    console.log(`Fetched ${products.length} products`);
+
+    return products;
+  } catch (err) {
+    console.error("Fetch Error (getProducts):", err);
+    throw err;
+  }
 }
 
-// this category url is not working on deployed site , fakestore cloudflare is blocking it, so commenting it out for now
 
 // export async function getCategories(): Promise<string[]> {
 //   const url = `${BASE_URL}/products/categories`;
-
+//
 //   console.log("Fetching:", url);
-
+//
 //   try {
 //     const res = await fetch(url, {
 //       next: { revalidate: 3600 },
 //     });
-
+//
 //     console.log("Status:", res.status);
 //     console.log("Status Text:", res.statusText);
-
+//
 //     if (!res.ok) {
 //       const text = await res.text();
 //       console.error("Response:", text);
 //       throw new Error(`Failed to fetch categories: ${res.status}`);
 //     }
-
+//
 //     return res.json();
 //   } catch (err) {
 //     console.error("Fetch Error:", err);
@@ -41,25 +59,92 @@ export async function getProducts(): Promise<Product[]> {
 //   }
 // }
 
-// alternate way for fetching categories using a different endpoint that works on deployed site
 export async function getCategories(): Promise<string[]> {
-  const products = await getProducts();
+  try {
+    console.log("Fetching categories from products...");
 
-  return [...new Set(products.map((p) => p.category))];
+    const products = await getProducts();
+
+    const categories = [...new Set(products.map((p) => p.category))];
+
+    console.log("Categories:", categories);
+
+    return categories;
+  } catch (err) {
+    console.error("Fetch Error (getCategories):", err);
+    throw err;
+  }
 }
 
-export async function getProductsByCategory(category: string): Promise<Product[]> {
-  const res = await fetch(`${BASE_URL}/products/category/${encodeURIComponent(category)}`, {
-    next: { revalidate: 60 },
-  });
-  if (!res.ok) throw new Error(`Failed to fetch products for ${category}`);
-  return res.json();
+
+// export async function getProductsByCategory(
+//   category: string
+// ): Promise<Product[]> {
+//   const res = await fetch(
+//     `${BASE_URL}/products/category/${encodeURIComponent(category)}`,
+//     {
+//       next: { revalidate: 60 },
+//     }
+//   );
+//
+//   if (!res.ok)
+//     throw new Error(`Failed to fetch products for ${category}`);
+//
+//   return res.json();
+// }
+
+export async function getProductsByCategory(
+  category: string
+): Promise<Product[]> {
+  try {
+    console.log(`Filtering products for category: ${category}`);
+
+    const products = await getProducts();
+
+    const filteredProducts = products.filter(
+      (product) => product.category === category
+    );
+
+    console.log(
+      `Found ${filteredProducts.length} products in category "${category}"`
+    );
+
+    return filteredProducts;
+  } catch (err) {
+    console.error("Fetch Error (getProductsByCategory):", err);
+    throw err;
+  }
 }
+
+
+// export async function getProduct(id: number): Promise<Product> {
+//   const res = await fetch(`${BASE_URL}/products/${id}`, {
+//     next: { revalidate: 60 },
+//   });
+//
+//   if (!res.ok)
+//     throw new Error(`Failed to fetch product ${id}`);
+//
+//   return res.json();
+// }
 
 export async function getProduct(id: number): Promise<Product> {
-  const res = await fetch(`${BASE_URL}/products/${id}`, {
-    next: { revalidate: 60 },
-  });
-  if (!res.ok) throw new Error(`Failed to fetch product ${id}`);
-  return res.json();
+  try {
+    console.log(`Finding product with id: ${id}`);
+
+    const products = await getProducts();
+
+    const product = products.find((product) => product.id === id);
+
+    if (!product) {
+      throw new Error(`Product ${id} not found`);
+    }
+
+    console.log("Product found:", product.title);
+
+    return product;
+  } catch (err) {
+    console.error("Fetch Error (getProduct):", err);
+    throw err;
+  }
 }
