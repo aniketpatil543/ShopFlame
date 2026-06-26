@@ -116,14 +116,19 @@ export default async function ProductDetailPage({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
 
         <div className="relative bg-gray-50 rounded-3xl overflow-hidden aspect-square max-h-[500px] flex items-center justify-center border border-gray-100">
-          <Image
+          {/* <Image
             src={product.image}
             alt={product.title}
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-contain p-12"
-          />
+          /> */}
+                 <img
+  src={product.image}
+  alt={product.title}
+  className="object-contain p-1"
+/>
         </div>
 
         <div className="flex flex-col">

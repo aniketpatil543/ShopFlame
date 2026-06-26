@@ -137,6 +137,8 @@ export async function getProducts(): Promise<Product[]> {
 
     const data: DummyProductsResponse = await res.json();
 
+    console.log("Fetched products:", data.products.length);
+
     return data.products.map(mapProduct);
   } catch (err) {
     console.error("Fetch Error (getProducts):", err);
@@ -169,6 +171,8 @@ export async function getCategories(): Promise<string[]> {
       url: string;
     }[] = await res.json();
 
+    console.log("Fetched categories:", data.length);
+
     return data.map((category) => category.slug);
   } catch (err) {
     console.error("Fetch Error (getCategories):", err);
@@ -199,6 +203,8 @@ export async function getProductsByCategory(
 
     const data: DummyProductsResponse = await res.json();
 
+    console.log("Fetched products for category", category, ":", data.products.length);
+
     return data.products.map(mapProduct);
   } catch (err) {
     console.error("Fetch Error (getProductsByCategory):", err);
@@ -224,6 +230,9 @@ export async function getProduct(id: number): Promise<Product> {
       console.error("Response:", text);
       throw new Error(`Failed to fetch product ${id}`);
     }
+
+    console.log("Fetched product:", id,"response:", res);
+
 
     const product: DummyProduct = await res.json();
 

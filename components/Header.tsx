@@ -34,7 +34,7 @@ export default function Header() {
 
             <button
               onClick={() => setCartOpen(true)}
-              className="relative p-2.5 rounded-xl bg-orange-50 hover:bg-orange-100 transition-colors group"
+              className="relative p-2.5 rounded-xl bg-orange-50 hover:bg-orange-100 transition-colors group hover:cursor-pointer"
               aria-label={`Open cart, ${itemCount} items`}
             >
                 <ShoppingCart

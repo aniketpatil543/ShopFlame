@@ -10,7 +10,9 @@ interface CartState {
 type CartAction =
   | { type: "ADD"; product: Product }
   | { type: "REMOVE"; id: number }
-  | { type: "CLEAR" };
+  | { type: "CLEAR" }
+  | { type: "DELETE"; id:number }
+  ;
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
@@ -29,6 +31,14 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return { items: state.items.filter((i) => i.id !== action.id) };
     case "CLEAR":
       return { items: [] };
+    case "DELETE":
+       { 
+        return {
+          items: state.items.map((i) =>
+            i.id === action.id ? { ...i, quantity: Math.max(i.quantity - 1, 0) } : i
+          ).filter((i) => i.quantity > 0),
+        };
+      }
     default:
       return state;
   }
@@ -41,6 +51,7 @@ interface CartContextValue {
   clearCart: () => void;
   totalPrice: number;
   itemCount: number;
+  deleteFromCart: (id: number) => void;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -60,6 +71,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: "CLEAR" });
   }, []);
 
+  const deleteFromCart = useCallback((id: number) => {
+    dispatch({ type: "DELETE", id });
+  }, []);
+
   const totalPrice = state.items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -69,7 +84,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ cartItems: state.items, addToCart, removeFromCart, clearCart, totalPrice, itemCount }}
+      value={{ cartItems: state.items, addToCart, removeFromCart, clearCart, totalPrice, itemCount, deleteFromCart }}
     >
       {children}
     </CartContext.Provider>

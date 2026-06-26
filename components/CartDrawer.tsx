@@ -3,7 +3,7 @@
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import { useEffect } from "react";
-import { ShoppingCart, X, Trash2, ArrowRight } from "lucide-react";
+import { ShoppingCart, X, Trash2, ArrowRight , Plus , Minus} from "lucide-react";
 
 interface CartDrawerProps {
   open: boolean;
@@ -14,7 +14,7 @@ export default function CartDrawer({
   open,
   onClose,
 }: CartDrawerProps) {
-  const { cartItems, removeFromCart, totalPrice, clearCart } = useCart();
+  const { cartItems, removeFromCart, totalPrice, clearCart ,addToCart, deleteFromCart} = useCart();
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -53,7 +53,7 @@ export default function CartDrawer({
 
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-100 transition-colors hover:cursor-pointer"
             aria-label="Close cart"
           >
             <X size={20} className="text-gray-600" />
@@ -81,7 +81,7 @@ export default function CartDrawer({
 
               <button
                 onClick={onClose}
-                className="btn-outline mt-2"
+                className="btn-outline mt-2 hover:cursor-pointer text-black"
               >
                 Browse Products
               </button>
@@ -113,28 +113,41 @@ export default function CartDrawer({
                       {item.title}
                     </p>
 
-                    <div className="flex items-center justify-between mt-2">
-                      <div>
-                        <span className="text-xs text-gray-500">
-                          Qty: {item.quantity}
-                        </span>
+                    <div className="flex items-center justify-between mt-3 text-black">
+  <div className="flex items-center rounded-lg border border-orange-200 overflow-hidden">
+    <button
+      onClick={() => deleteFromCart(item.id)}
+      className="px-3 py-1 hover:bg-orange-100 transition text-lg font-semibold hover:cursor-pointer"
+    >
+      <Minus size={20} />
+    </button>
 
-                        <span className="ml-2 text-sm font-bold text-orange-600">
-                          $
-                          {(item.price * item.quantity).toFixed(2)}
-                        </span>
-                      </div>
+    <span className="px-4 font-semibold">
+      {item.quantity}
+    </span>
 
-                      <button
-                        onClick={() =>
-                          removeFromCart(item.id)
-                        }
-                        className="p-1 text-gray-400 hover:text-red-500 transition-colors"
-                        aria-label="Remove item"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
+    <button
+      onClick={() => addToCart(item)}
+      className="px-3 py-1 hover:bg-orange-100 transition text-lg font-semibold hover:cursor-pointer"
+    >
+      <Plus size={20} />
+    </button>
+  </div>
+
+  <div className="text-right">
+    <p className="text-sm font-bold text-orange-600">
+      ${(item.price * item.quantity).toFixed(2)}
+    </p>
+
+    <button
+      onClick={() => removeFromCart(item.id)}
+      className="mt-1 flex items-center gap-1 text-xs text-red-500 hover:text-red-700 transition hover:cursor-pointer"
+    >
+      <Trash2 size={14} />
+      Remove
+    </button>
+  </div>
+</div>
                   </div>
                 </li>
               ))}
@@ -154,14 +167,9 @@ export default function CartDrawer({
               </span>
             </div>
 
-            <button className="w-full btn-primary py-3 rounded-xl flex items-center justify-center gap-2">
-              Checkout
-              <ArrowRight size={18} />
-            </button>
-
             <button
               onClick={clearCart}
-              className="w-full text-sm text-gray-400 hover:text-red-500 transition-colors text-center"
+              className="w-full text-sm text-black hover:text-red-500 transition-colors text-center hover:cursor-pointer"
             >
               Clear cart
             </button>
